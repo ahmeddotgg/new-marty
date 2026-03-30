@@ -1,5 +1,5 @@
-import Banner from "@/components/client/banner"
-import FuturedStores from "@/components/client/futured-stores"
+import Banner from "@/components/shared/banner"
+import FuturedStores from "@/components/shared/futured-stores"
 import Hero from "@/components/shared/hero"
 import Navbar from "@/components/shared/navbar"
 

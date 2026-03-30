@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "../ui/button"
+import MobileSheet from "./mobile-sheet"
 import { cn } from "@/lib/utils"
 import { useBanner } from "@/store/banner"
 
@@ -19,15 +20,16 @@ export default function Navbar() {
   const setIsOpen = useBanner((state) => state.setIsOpen)
 
   return (
-    <div className="wrapper px-2 py-6 lg:px-0">
-      <div className="flex items-center gap-3 font-semibold sm:gap-6">
+    <div className="wrapper py-6">
+      <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 font-semibold shadow-2xl sm:gap-6">
+        <MobileSheet />
         <img
-          src="/logo.png"
+          src="/logo.svg"
           alt="Logo"
           draggable="false"
-          className="me-auto w-auto max-w-28 md:me-0"
+          className="me-auto w-auto max-w-32 md:me-0"
         />
-        <div className="hidden flex-1 gap-4 text-xl md:flex">
+        <div className="hidden flex-1 items-center justify-center gap-4 text-xl md:flex">
           {links.map((link) => {
             const active =
               pathname === link.href ||

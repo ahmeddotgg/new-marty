@@ -8,7 +8,7 @@ export default function Hero() {
   const isInView = useInView(ref, { once: true })
 
   return (
-    <div className="wrapper px-2 py-32 lg:px-0">
+    <div className="wrapper py-52">
       <div>
         <motion.h2
           ref={ref}
@@ -25,9 +25,7 @@ export default function Hero() {
             بسرعة وسهولة.
           </span>
           <br />
-          بيتك التاني لتسوق المطاعم, <span className="whitespace-nowrap">
-            سوبر ماركت
-          </span>{" "}
+          بيتك التاني لتسوق المطاعم, <span className="whitespace-nowrap">ماركت</span>{" "}
           <br /> كافيهات, صيدليات.
         </motion.h2>
       </div>

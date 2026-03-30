@@ -29,7 +29,8 @@ const graphik = localFont({
       weight: "700"
     }
   ],
-  variable: "--graphik"
+  variable: "--graphik",
+  preload: false
 })
 
 const nohemi = localFont({
@@ -43,7 +44,8 @@ const nohemi = localFont({
       weight: "900"
     }
   ],
-  variable: "--nohemi"
+  variable: "--nohemi",
+  preload: false
 })
 
 const inter = localFont({
@@ -57,7 +59,8 @@ const inter = localFont({
       weight: "900"
     }
   ],
-  variable: "--inter"
+  variable: "--inter",
+  preload: false
 })
 
 export default function RootLayout({ children }: PropsWithChildren) {
@@ -65,7 +68,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html
       lang="ar"
       dir="rtl"
-      className={cn(graphik.variable, nohemi.variable, "font-sans", inter.variable)}
+      className={cn(graphik.variable, nohemi.variable, inter.variable)}
     >
       <body>
         <DirectionProvider direction="rtl">{children}</DirectionProvider>

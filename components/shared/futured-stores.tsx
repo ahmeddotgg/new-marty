@@ -37,7 +37,6 @@ export default function FuturedStores() {
     <div className="wrapper py-14" dir="ltr">
       <Marquee
         className="mask-r-from-90% mask-l-from-90% py-8 select-none"
-        pauseOnClick
         pauseOnHover
         autoFill
         speed={30}
@@ -48,7 +47,7 @@ export default function FuturedStores() {
               draggable="false"
               src={store.image}
               alt={store.name}
-              className="inline-block size-22 rounded-full ring-2"
+              className="inline-block size-22 rounded-full ring-3 ring-secondary"
             />
           </div>
         ))}
