@@ -2,16 +2,11 @@
 
 import AppStoreButton from "@heycar-uikit/app-store-button"
 import * as motion from "motion/react-client"
-import { useEffect } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { useBanner } from "@/store/banner"
 
 export default function Banner() {
-  const { open, setIsOpen, init, markSeen } = useBanner()
-
-  useEffect(() => {
-    init()
-  }, [init])
+  const { open, setIsOpen, markSeen } = useBanner()
 
   return (
     <Dialog

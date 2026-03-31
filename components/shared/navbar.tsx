@@ -27,7 +27,7 @@ export default function Navbar() {
           src="/logo.svg"
           alt="Logo"
           draggable="false"
-          className="me-auto w-auto max-w-32 md:me-0"
+          className="me-auto w-auto max-w-26 md:me-0 md:max-w-32"
         />
         <div className="hidden flex-1 items-center justify-center gap-4 text-xl md:flex">
           {links.map((link) => {

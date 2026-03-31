@@ -17,7 +17,7 @@
     ]
   },
   "experimentalTailwindcss": {
-    "stylesheet": "./app/globals.css",
+    "stylesheet": "./app/(website)/globals.css",
     "functions": ["clsx", "cn"],
     "preserveWhitespace": false,
     "preserveDuplicates": false
