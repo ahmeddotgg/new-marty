@@ -151,8 +151,11 @@ export interface Media {
 export interface Store {
   id: number
   name: string
+  slug: string
   category: number | Category
   sub_categories?: string[] | null
+  isFutured?: boolean | null
+  isAvaliable?: boolean | null
   cover: number | Media
   logo: number | Media
   menu_imgs: (number | Media)[]
@@ -187,11 +190,11 @@ export interface Store {
 export interface Category {
   id: number
   name: string
-  icon?: (number | null) | Media
+  icon: number | Media
   sub_categories?:
     | {
         name: string
-        icon?: (number | null) | Media
+        icon: number | Media
         id?: string | null
       }[]
     | null
@@ -329,8 +332,11 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface StoresSelect<T extends boolean = true> {
   name?: T
+  slug?: T
   category?: T
   sub_categories?: T
+  isFutured?: T
+  isAvaliable?: T
   cover?: T
   logo?: T
   menu_imgs?: T
