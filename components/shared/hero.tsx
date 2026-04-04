@@ -2,6 +2,7 @@
 
 import { useInView, motion } from "motion/react"
 import { useRef } from "react"
+import Stores from "./stores"
 
 export default function Hero() {
   const ref = useRef(null)
@@ -28,7 +29,7 @@ export default function Hero() {
           بيتك التاني لتوصيل الطلبات.
         </motion.h2>
         <motion.div
-          className="mx-auto flex max-w-sm items-center gap-4 md:mx-0"
+          className="flex items-center justify-center gap-4 md:justify-start"
           ref={ref}
           initial="hidden"
           animate={isInView ? "show" : ""}
@@ -37,18 +38,7 @@ export default function Hero() {
             hidden: { opacity: 0, y: -18 }
           }}
         >
-          {/* <AppStoreButton
-            tabIndex={-1}
-            href="https://play.google.com/store/apps/details?id=com.fourm.marty"
-            lang="en-EN"
-            store="google"
-          />
-          <AppStoreButton
-            tabIndex={-1}
-            href="https://apps.apple.com/eg/app/marty/id6759621448"
-            lang="en-EN"
-            store="apple"
-          /> */}
+          <Stores />
         </motion.div>
       </div>
       <motion.img

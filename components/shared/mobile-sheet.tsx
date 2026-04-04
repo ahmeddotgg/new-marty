@@ -14,6 +14,7 @@ import {
   SheetTrigger
 } from "../ui/sheet"
 import { links } from "./navbar"
+import Stores from "./stores"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -68,6 +69,9 @@ export default function MobileSheet() {
           >
             أتصل بنا
           </a>
+        </div>
+        <div className="flex gap-2 p-4">
+          <Stores />
         </div>
       </SheetContent>
     </Sheet>
