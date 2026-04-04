@@ -15,7 +15,8 @@ const Categories: CollectionConfig = {
     {
       name: "icon",
       type: "upload",
-      relationTo: "media"
+      relationTo: "media",
+      required: true
     },
     {
       name: "sub_categories",
@@ -30,7 +31,8 @@ const Categories: CollectionConfig = {
         {
           name: "icon",
           type: "upload",
-          relationTo: "media"
+          relationTo: "media",
+          required: true
         }
       ]
     }

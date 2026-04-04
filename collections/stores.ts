@@ -9,6 +9,13 @@ type CategoryDocument = {
     | null
 }
 
+const formatSlug = (value: string): string =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0600-\u06FF]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+
 const getRelationID = (value: unknown): number | string | null => {
   if (
     typeof value === "number" ||
@@ -67,7 +74,7 @@ const sanitizeSubCategories: FieldHook = async ({
 }) => {
   const incomingCategory = getRelationID(data?.category)
   const originalCategory = getRelationID(originalDoc?.category)
-  const categoryChanged = operation === "create" || incomingCategory !== originalCategory
+  const categoryChanged = operation !== "create" && incomingCategory !== originalCategory
 
   if (!incomingCategory) {
     return []
@@ -102,6 +109,28 @@ const Stores: CollectionConfig = {
       required: true
     },
     {
+      name: "slug",
+      type: "text",
+      required: true,
+      unique: true,
+      index: true,
+      hooks: {
+        beforeValidate: [
+          ({ value, data }) => {
+            if (typeof value === "string" && value.trim().length > 0) {
+              return formatSlug(value)
+            }
+
+            if (typeof data?.name === "string" && data.name.trim().length > 0) {
+              return formatSlug(data.name)
+            }
+
+            return value
+          }
+        ]
+      }
+    },
+    {
       name: "category",
       type: "relationship",
       relationTo: "categories",
@@ -122,6 +151,16 @@ const Stores: CollectionConfig = {
           Field: "/components/payload/sub-categories-field"
         }
       }
+    },
+    {
+      name: "isFutured",
+      type: "checkbox",
+      defaultValue: false
+    },
+    {
+      name: "isAvaliable",
+      type: "checkbox",
+      defaultValue: false
     },
 
     {
