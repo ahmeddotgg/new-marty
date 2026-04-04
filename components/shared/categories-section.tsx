@@ -59,9 +59,10 @@ function SubCategoriesRow({
     return (
       <Carousel
         className="w-full"
-        dir="ltr"
+        dir="rtl"
         opts={{
-          align: "start"
+          direction: "rtl",
+          loop: true
         }}
       >
         <CarouselContent>

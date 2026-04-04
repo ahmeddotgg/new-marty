@@ -29,15 +29,16 @@ export default function FuturedStores({ stores }: FuturedStoresProps) {
     <section className="wrapper py-8">
       <Carousel
         className="mx-auto w-full max-w-6xl"
-        dir="ltr"
+        dir="rtl"
         opts={{
-          align: "start",
+          direction: "rtl",
           loop: true
         }}
         plugins={[
           Autoplay({
             delay: 3000,
-            stopOnInteraction: true
+            stopOnInteraction: false,
+            playOnInit: true
           })
         ]}
       >
