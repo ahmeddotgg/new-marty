@@ -15,5 +15,5 @@
   "env": {
     "builtin": true
   },
-  "ignorePatterns": [".next"]
+  "ignorePatterns": [".next", ".agents"]
 }
