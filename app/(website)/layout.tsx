@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import "./globals.css"
 import localFont from "next/font/local"
 import { PropsWithChildren } from "react"
+import Banner from "@/components/shared/banner"
+import Navbar from "@/components/shared/navbar"
 import { DirectionProvider } from "@/components/ui/direction"
 import { cn } from "@/lib/utils"
 
@@ -72,7 +74,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
       suppressHydrationWarning
     >
       <body>
-        <DirectionProvider direction="rtl">{children}</DirectionProvider>
+        <DirectionProvider direction="rtl">
+          <Banner />
+          <Navbar />
+          {children}
+        </DirectionProvider>
       </body>
     </html>
   )
