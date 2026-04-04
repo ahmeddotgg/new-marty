@@ -29,6 +29,10 @@ const graphik = localFont({
     {
       path: "../fonts/graphik/GraphikArabic-Bold.woff2",
       weight: "700"
+    },
+    {
+      path: "../fonts/graphik/GraphikArabic-Black.woff2",
+      weight: "900"
     }
   ],
   variable: "--graphik",
