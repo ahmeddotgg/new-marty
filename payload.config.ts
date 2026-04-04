@@ -4,9 +4,8 @@ import path from "path"
 import { buildConfig } from "payload"
 import sharp from "sharp"
 import { fileURLToPath } from "url"
+import Categories from "./collections/categories"
 import Media from "./collections/media"
-import StoreItems from "./collections/store-items"
-import StoreTypes from "./collections/store-types"
 import Stores from "./collections/stores"
 
 const filename = fileURLToPath(import.meta.url)
@@ -18,7 +17,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname)
     }
   },
-  collections: [Media, Stores, StoreItems, StoreTypes],
+  collections: [Media, Stores, Categories],
   plugins: [
     vercelBlobStorage({
       collections: {

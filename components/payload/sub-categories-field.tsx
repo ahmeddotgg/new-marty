@@ -26,28 +26,27 @@ const getRelationID = (value: unknown): number | string | null => {
   return null
 }
 
-type StoreTypeResponse = {
-  subTypes?:
+type CategoryResponse = {
+  sub_categories?:
     | {
-        label?: string | null
-        value?: string | null
+        name?: string | null
       }[]
     | null
 }
 
-const StoreSubTypesField = (props: any) => {
+const SubCategoriesField = (props: any) => {
   const { path } = props
   const { setValue, value } = useField<string[]>({ path })
-  const typeValue = useFormFields(([fields]) => fields.type?.value)
-  const selectedTypeID = getRelationID(typeValue)
-  const previousTypeID = useRef<number | string | null>(selectedTypeID)
+  const categoryValue = useFormFields(([fields]) => fields.category?.value)
+  const selectedCategoryID = getRelationID(categoryValue)
+  const previousCategoryID = useRef<number | string | null>(selectedCategoryID)
   const [options, setOptions] = useState<OptionObject[]>([])
 
   useEffect(() => {
-    const hasTypeChanged = previousTypeID.current !== selectedTypeID
-    previousTypeID.current = selectedTypeID
+    const hasCategoryChanged = previousCategoryID.current !== selectedCategoryID
+    previousCategoryID.current = selectedCategoryID
 
-    if (!selectedTypeID) {
+    if (!selectedCategoryID) {
       setOptions([])
 
       if (Array.isArray(value) && value.length > 0) {
@@ -62,7 +61,7 @@ const StoreSubTypesField = (props: any) => {
     const loadOptions = async () => {
       try {
         const response = await fetch(
-          `/api/store-types/${selectedTypeID}?depth=0&select[subTypes]=true`,
+          `/api/categories/${selectedCategoryID}?depth=0&select[sub_categories]=true`,
           {
             credentials: "include",
             signal: controller.signal
@@ -74,18 +73,15 @@ const StoreSubTypesField = (props: any) => {
           return
         }
 
-        const storeType = (await response.json()) as StoreTypeResponse
-        const nextOptions = (storeType.subTypes ?? [])
+        const category = (await response.json()) as CategoryResponse
+        const nextOptions = (category.sub_categories ?? [])
           .filter(
-            (subType) =>
-              typeof subType?.label === "string" &&
-              subType.label.trim().length > 0 &&
-              typeof subType?.value === "string" &&
-              subType.value.trim().length > 0
+            (subCategory) =>
+              typeof subCategory?.name === "string" && subCategory.name.trim().length > 0
           )
-          .map((subType) => ({
-            label: subType.label as string,
-            value: subType.value as string
+          .map((subCategory) => ({
+            label: subCategory.name as string,
+            value: subCategory.name as string
           }))
 
         setOptions(nextOptions)
@@ -94,7 +90,7 @@ const StoreSubTypesField = (props: any) => {
         const allowedValues = new Set(nextOptions.map((option) => option.value))
         const filteredValues = selectedValues.filter((item) => allowedValues.has(item))
 
-        if (hasTypeChanged || filteredValues.length !== selectedValues.length) {
+        if (hasCategoryChanged || filteredValues.length !== selectedValues.length) {
           setValue(filteredValues)
         }
       } catch (error) {
@@ -109,7 +105,7 @@ const StoreSubTypesField = (props: any) => {
     void loadOptions()
 
     return () => controller.abort()
-  }, [selectedTypeID, setValue, value])
+  }, [selectedCategoryID, setValue, value])
 
   return (
     <SelectInput
@@ -150,4 +146,4 @@ const StoreSubTypesField = (props: any) => {
   )
 }
 
-export default StoreSubTypesField
+export default SubCategoriesField

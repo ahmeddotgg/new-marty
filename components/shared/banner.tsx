@@ -1,6 +1,5 @@
 "use client"
 
-import AppStoreButton from "@heycar-uikit/app-store-button"
 import * as motion from "motion/react-client"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { useBanner } from "@/store/banner"
@@ -27,20 +26,6 @@ export default function Banner() {
             animate={{ x: 0, opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 18, duration: 0.6 }}
           />
-          <div className="flex max-w-62 items-center gap-4 md:max-w-75">
-            <AppStoreButton
-              tabIndex={-1}
-              href="https://play.google.com/store/apps/details?id=com.fourm.marty"
-              lang="en-EN"
-              store="google"
-            />
-            <AppStoreButton
-              tabIndex={-1}
-              href="https://apps.apple.com/eg/app/marty/id6759621448"
-              lang="en-EN"
-              store="apple"
-            />
-          </div>
         </div>
 
         <div className="relative h-60 w-87.5">

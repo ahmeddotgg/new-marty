@@ -69,8 +69,7 @@ export interface Config {
   collections: {
     media: Media
     stores: Store
-    "store-items": StoreItem
-    "store-types": StoreType
+    categories: Category
     "payload-kv": PayloadKv
     users: User
     "payload-locked-documents": PayloadLockedDocument
@@ -81,8 +80,7 @@ export interface Config {
   collectionsSelect: {
     media: MediaSelect<false> | MediaSelect<true>
     stores: StoresSelect<false> | StoresSelect<true>
-    "store-items": StoreItemsSelect<false> | StoreItemsSelect<true>
-    "store-types": StoreTypesSelect<false> | StoreTypesSelect<true>
+    categories: CategoriesSelect<false> | CategoriesSelect<true>
     "payload-kv": PayloadKvSelect<false> | PayloadKvSelect<true>
     users: UsersSelect<false> | UsersSelect<true>
     "payload-locked-documents":
@@ -153,16 +151,15 @@ export interface Media {
 export interface Store {
   id: number
   name: string
-  type: number | StoreType
-  subTypes?: string[] | null
-  menuSections?:
-    | {
-        name: string
-        sortOrder?: number | null
-        isActive?: boolean | null
-        id?: string | null
-      }[]
-    | null
+  category: number | Category
+  sub_categories?: string[] | null
+  cover: number | Media
+  logo: number | Media
+  menu_imgs: (number | Media)[]
+  workingHours: {
+    opensAt?: string | null
+    closesAt?: string | null
+  }
   branches: {
     name: string
     address: string
@@ -170,19 +167,13 @@ export interface Store {
     phone: string
     id?: string | null
   }[]
-  cover: number | Media
-  logo: number | Media
-  workingHours: {
-    opensAt?: string | null
-    closesAt?: string | null
-  }
   offers?:
     | {
         name: string
-        description?: string | null
-        image?: (number | null) | Media
+        description: string
+        image: number | Media
         link?: string | null
-        price?: number | null
+        price: number
         id?: string | null
       }[]
     | null
@@ -191,37 +182,19 @@ export interface Store {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "store-types".
+ * via the `definition` "categories".
  */
-export interface StoreType {
+export interface Category {
   id: number
   name: string
-  subTypes?:
+  icon?: (number | null) | Media
+  sub_categories?:
     | {
-        label: string
-        value: string
+        name: string
+        icon?: (number | null) | Media
         id?: string | null
       }[]
     | null
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "store-items".
- */
-export interface StoreItem {
-  id: number
-  name: string
-  store: number | Store
-  sectionKey?: string | null
-  description?: string | null
-  image?: (number | null) | Media
-  price: number
-  isAvailable?: boolean | null
-  isFeatured?: boolean | null
-  sortOrder?: number | null
-  tags?: string[] | null
   updatedAt: string
   createdAt: string
 }
@@ -283,12 +256,8 @@ export interface PayloadLockedDocument {
         value: number | Store
       } | null)
     | ({
-        relationTo: "store-items"
-        value: number | StoreItem
-      } | null)
-    | ({
-        relationTo: "store-types"
-        value: number | StoreType
+        relationTo: "categories"
+        value: number | Category
       } | null)
     | ({
         relationTo: "users"
@@ -360,15 +329,16 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface StoresSelect<T extends boolean = true> {
   name?: T
-  type?: T
-  subTypes?: T
-  menuSections?:
+  category?: T
+  sub_categories?: T
+  cover?: T
+  logo?: T
+  menu_imgs?: T
+  workingHours?:
     | T
     | {
-        name?: T
-        sortOrder?: T
-        isActive?: T
-        id?: T
+        opensAt?: T
+        closesAt?: T
       }
   branches?:
     | T
@@ -378,14 +348,6 @@ export interface StoresSelect<T extends boolean = true> {
         mapsUrl?: T
         phone?: T
         id?: T
-      }
-  cover?: T
-  logo?: T
-  workingHours?:
-    | T
-    | {
-        opensAt?: T
-        closesAt?: T
       }
   offers?:
     | T
@@ -402,33 +364,16 @@ export interface StoresSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "store-items_select".
+ * via the `definition` "categories_select".
  */
-export interface StoreItemsSelect<T extends boolean = true> {
+export interface CategoriesSelect<T extends boolean = true> {
   name?: T
-  store?: T
-  sectionKey?: T
-  description?: T
-  image?: T
-  price?: T
-  isAvailable?: T
-  isFeatured?: T
-  sortOrder?: T
-  tags?: T
-  updatedAt?: T
-  createdAt?: T
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "store-types_select".
- */
-export interface StoreTypesSelect<T extends boolean = true> {
-  name?: T
-  subTypes?:
+  icon?: T
+  sub_categories?:
     | T
     | {
-        label?: T
-        value?: T
+        name?: T
+        icon?: T
         id?: T
       }
   updatedAt?: T

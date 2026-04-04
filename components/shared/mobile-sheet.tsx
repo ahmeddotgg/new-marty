@@ -1,5 +1,5 @@
 "use client"
-import AppStoreButton from "@heycar-uikit/app-store-button"
+
 import { Menu01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import Link from "next/link"
@@ -68,20 +68,6 @@ export default function MobileSheet() {
           >
             أتصل بنا
           </a>
-        </div>
-        <div className="flex items-center gap-4 p-4">
-          <AppStoreButton
-            tabIndex={-1}
-            href="https://play.google.com/store/apps/details?id=com.fourm.marty"
-            lang="en-EN"
-            store="google"
-          />
-          <AppStoreButton
-            tabIndex={-1}
-            href="https://apps.apple.com/eg/app/marty/id6759621448"
-            lang="en-EN"
-            store="apple"
-          />
         </div>
       </SheetContent>
     </Sheet>

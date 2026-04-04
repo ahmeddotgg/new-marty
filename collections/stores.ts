@@ -1,11 +1,10 @@
 import type { CollectionConfig, FieldHook, PayloadRequest } from "payload"
 
-type StoreTypeDocument = {
+type CategoryDocument = {
   id: number | string
-  subTypes?:
+  sub_categories?:
     | {
-        label?: string | null
-        value?: string | null
+        name?: string | null
       }[]
     | null
 }
@@ -32,49 +31,49 @@ const getRelationID = (value: unknown): number | string | null => {
   return null
 }
 
-const getStoreTypeSubTypeOptions = async (typeValue: unknown, req: PayloadRequest) => {
-  const typeID = getRelationID(typeValue)
+const getCategorySubCategoryOptions = async (
+  categoryValue: unknown,
+  req: PayloadRequest
+) => {
+  const categoryID = getRelationID(categoryValue)
 
-  if (!typeID) {
+  if (!categoryID) {
     return []
   }
 
-  const storeType = (await req.payload.findByID({
-    collection: "store-types" as any,
-    id: typeID,
+  const category = (await req.payload.findByID({
+    collection: "categories",
+    id: categoryID,
     depth: 0
-  })) as StoreTypeDocument
+  })) as CategoryDocument
 
-  return (storeType.subTypes ?? [])
+  return (category.sub_categories ?? [])
     .filter(
-      (subType) =>
-        typeof subType?.label === "string" &&
-        subType.label.trim().length > 0 &&
-        typeof subType?.value === "string" &&
-        subType.value.trim().length > 0
+      (subCategory) =>
+        typeof subCategory?.name === "string" && subCategory.name.trim().length > 0
     )
-    .map((subType) => ({
-      label: subType.label as string,
-      value: subType.value as string
+    .map((subCategory) => ({
+      label: subCategory.name as string,
+      value: subCategory.name as string
     }))
 }
 
-const sanitizeSubTypes: FieldHook = async ({
+const sanitizeSubCategories: FieldHook = async ({
   data,
   originalDoc,
   operation,
   req,
   value
 }) => {
-  const incomingType = getRelationID(data?.type)
-  const originalType = getRelationID(originalDoc?.type)
-  const typeChanged = operation === "create" || incomingType !== originalType
+  const incomingCategory = getRelationID(data?.category)
+  const originalCategory = getRelationID(originalDoc?.category)
+  const categoryChanged = operation === "create" || incomingCategory !== originalCategory
 
-  if (!incomingType) {
+  if (!incomingCategory) {
     return []
   }
 
-  if (typeChanged) {
+  if (categoryChanged) {
     return []
   }
 
@@ -82,7 +81,7 @@ const sanitizeSubTypes: FieldHook = async ({
     return []
   }
 
-  const options = await getStoreTypeSubTypeOptions(incomingType, req)
+  const options = await getCategorySubCategoryOptions(incomingCategory, req)
   const allowedValues = new Set(options.map((option) => option.value))
 
   return value.filter(
@@ -94,7 +93,7 @@ const Stores: CollectionConfig = {
   slug: "stores",
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["name", "type", "updatedAt"]
+    defaultColumns: ["name", "category", "updatedAt"]
   },
   fields: [
     {
@@ -103,102 +102,46 @@ const Stores: CollectionConfig = {
       required: true
     },
     {
-      name: "type",
+      name: "category",
       type: "relationship",
-      relationTo: "store-types" as any,
+      relationTo: "categories",
       required: true,
       maxDepth: 0
     },
     {
-      name: "subTypes",
+      name: "sub_categories",
       type: "text",
       hasMany: true,
+      required: true,
       hooks: {
-        beforeValidate: [sanitizeSubTypes]
+        beforeValidate: [sanitizeSubCategories]
       },
       admin: {
-        condition: (data) => Boolean(getRelationID(data?.type)),
+        condition: (data) => Boolean(getRelationID(data?.category)),
         components: {
-          Field: "/components/payload/store-subtypes-field"
+          Field: "/components/payload/sub-categories-field"
         }
       }
     },
-    {
-      name: "menuSections",
-      type: "array",
-      validate: (value) => {
-        if (!Array.isArray(value) || value.length === 0) {
-          return true
-        }
 
-        const names = value
-          .map((item) => {
-            const row = item as { name?: unknown }
-            return typeof row.name === "string" ? row.name.trim().toLowerCase() : ""
-          })
-          .filter(Boolean)
-
-        if (names.length !== new Set(names).size) {
-          return "Menu section names must be unique within the same store."
-        }
-
-        return true
-      },
-      fields: [
-        {
-          name: "name",
-          type: "text",
-          required: true
-        },
-        {
-          name: "sortOrder",
-          type: "number"
-        },
-        {
-          name: "isActive",
-          type: "checkbox",
-          defaultValue: true
-        }
-      ]
-    },
-    {
-      name: "branches",
-      type: "array",
-      required: true,
-      minRows: 1,
-      fields: [
-        {
-          name: "name",
-          type: "text",
-          required: true
-        },
-        {
-          name: "address",
-          type: "textarea",
-          required: true
-        },
-        {
-          name: "mapsUrl",
-          type: "text"
-        },
-        {
-          name: "phone",
-          type: "text",
-          required: true
-        }
-      ]
-    },
     {
       name: "cover",
       type: "upload",
       required: true,
-      relationTo: "media" as any
+      relationTo: "media"
     },
     {
       name: "logo",
       type: "upload",
       required: true,
-      relationTo: "media" as any
+      relationTo: "media"
+    },
+    {
+      name: "menu_imgs",
+      type: "upload",
+      required: true,
+      hasMany: true,
+      relationTo: "media"
     },
     {
       name: "workingHours",
@@ -233,7 +176,36 @@ const Stores: CollectionConfig = {
       ]
     },
     {
+      name: "branches",
+      dbName: "branches",
+      type: "array",
+      required: true,
+      minRows: 1,
+      fields: [
+        {
+          name: "name",
+          type: "text",
+          required: true
+        },
+        {
+          name: "address",
+          type: "textarea",
+          required: true
+        },
+        {
+          name: "mapsUrl",
+          type: "text"
+        },
+        {
+          name: "phone",
+          type: "text",
+          required: true
+        }
+      ]
+    },
+    {
       name: "offers",
+      dbName: "offers",
       type: "array",
       fields: [
         {
@@ -243,12 +215,14 @@ const Stores: CollectionConfig = {
         },
         {
           name: "description",
+          required: true,
           type: "textarea"
         },
         {
           name: "image",
           type: "upload",
-          relationTo: "media" as any
+          relationTo: "media",
+          required: true
         },
         {
           name: "link",
@@ -256,7 +230,8 @@ const Stores: CollectionConfig = {
         },
         {
           name: "price",
-          type: "number"
+          type: "number",
+          required: true
         }
       ]
     }

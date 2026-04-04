@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload"
 
-const StoreTypes: CollectionConfig = {
-  slug: "store-types",
+const Categories: CollectionConfig = {
+  slug: "categories",
   admin: {
     useAsTitle: "name",
     defaultColumns: ["name", "updatedAt"]
@@ -13,18 +13,24 @@ const StoreTypes: CollectionConfig = {
       required: true
     },
     {
-      name: "subTypes",
+      name: "icon",
+      type: "upload",
+      relationTo: "media"
+    },
+    {
+      name: "sub_categories",
       type: "array",
+      dbName: "sub_categories",
       fields: [
         {
-          name: "label",
+          name: "name",
           type: "text",
           required: true
         },
         {
-          name: "value",
-          type: "text",
-          required: true
+          name: "icon",
+          type: "upload",
+          relationTo: "media"
         }
       ]
     }
@@ -32,5 +38,5 @@ const StoreTypes: CollectionConfig = {
   timestamps: true
 }
 
-export default StoreTypes
-export { StoreTypes }
+export default Categories
+export { Categories }

@@ -1,6 +1,5 @@
 "use client"
 
-import AppStoreButton from "@heycar-uikit/app-store-button"
 import { useInView, motion } from "motion/react"
 import { useRef } from "react"
 
@@ -38,7 +37,7 @@ export default function Hero() {
             hidden: { opacity: 0, y: -18 }
           }}
         >
-          <AppStoreButton
+          {/* <AppStoreButton
             tabIndex={-1}
             href="https://play.google.com/store/apps/details?id=com.fourm.marty"
             lang="en-EN"
@@ -49,7 +48,7 @@ export default function Hero() {
             href="https://apps.apple.com/eg/app/marty/id6759621448"
             lang="en-EN"
             store="apple"
-          />
+          /> */}
         </motion.div>
       </div>
       <motion.img
