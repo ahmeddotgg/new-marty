@@ -1,7 +1,15 @@
 "use client"
 
+import Image from "next/image"
 import * as motion from "motion/react-client"
 import { useState } from "react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type StoreTabsProps = {
@@ -9,6 +17,11 @@ type StoreTabsProps = {
     opensAt?: string | null
     closesAt?: string | null
   } | null
+  menuImages: {
+    id: number | string
+    url: string
+    alt: string
+  }[]
   branches: {
     name: string
     address: string
@@ -29,7 +42,7 @@ const formatTime = (value?: string | null) => {
   }).format(new Date(value))
 }
 
-export default function StoreTabs({ workingHours, branches }: StoreTabsProps) {
+export default function StoreTabs({ workingHours, menuImages, branches }: StoreTabsProps) {
   const [activeTab, setActiveTab] = useState("menu")
 
   return (
@@ -60,7 +73,40 @@ export default function StoreTabs({ workingHours, branches }: StoreTabsProps) {
         className="mt-6"
       >
         <TabsContent value="menu" className="rounded-4xl bg-accent p-6 text-white">
-          سيتم اضافة المنيو قريباً.
+          {menuImages.length > 0 ? (
+            <Carousel
+              opts={{ align: "start", loop: menuImages.length > 1 }}
+              className="mx-auto w-full max-w-4xl"
+            >
+              <CarouselContent>
+                {menuImages.map((image) => (
+                  <CarouselItem key={image.id} className="basis-full sm:basis-1/2 lg:basis-1/3">
+                    <div className="overflow-hidden rounded-[2rem] bg-secondary/40">
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        width={1400}
+                        height={1800}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        unoptimized
+                        className="h-80 w-full object-cover sm:h-96"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {menuImages.length > 1 ? (
+                <>
+                  <CarouselPrevious className="start-3 top-1/2 border-0 bg-background/90 text-foreground hover:bg-background md:start-4" />
+                  <CarouselNext className="end-3 top-1/2 border-0 bg-background/90 text-foreground hover:bg-background md:end-4" />
+                </>
+              ) : null}
+            </Carousel>
+          ) : (
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 text-center text-white/80">
+              سيتم اضافة المنيو قريباً.
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="offers" className="rounded-4xl bg-accent p-6 text-white">
@@ -72,8 +118,7 @@ export default function StoreTabs({ workingHours, branches }: StoreTabsProps) {
             <div className="rounded-4xl bg-accent p-6 text-white">
               <h2 className="text-lg font-bold">ساعات العمل</h2>
               <p className="mt-2">
-                من {formatTime(workingHours?.opensAt)} إلى{" "}
-                {formatTime(workingHours?.closesAt)}
+                من {formatTime(workingHours?.opensAt)} إلى {formatTime(workingHours?.closesAt)}
               </p>
             </div>
 

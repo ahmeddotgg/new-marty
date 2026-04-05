@@ -11,6 +11,12 @@ type StorePageProps = {
   }>
 }
 
+type StoreMenuImage = {
+  id: number | string
+  url: string
+  alt: string
+}
+
 export default async function StorePage({ params }: StorePageProps) {
   const { slug } = await params
   const payload = await getPayload({ config })
@@ -25,6 +31,7 @@ export default async function StorePage({ params }: StorePageProps) {
         slug: true,
         cover: true,
         logo: true,
+        menu_imgs: true,
         category: true,
         sub_categories: true,
         branches: true,
@@ -53,6 +60,25 @@ export default async function StorePage({ params }: StorePageProps) {
       typeof store.logo === "object" && store.logo
         ? ((store.logo as Media).url ?? null)
         : null
+    const menuImages = (store.menu_imgs ?? []).reduce<StoreMenuImage[]>((images, image, index) => {
+      if (typeof image !== "object" || !image) {
+        return images
+      }
+
+      const media = image as Media
+
+      if (!media.url) {
+        return images
+      }
+
+      images.push({
+        id: media.id ?? `menu-image-${index}`,
+        url: media.url,
+        alt: media.alt || `${store.name} menu ${index + 1}`
+      })
+
+      return images
+    }, [])
 
     return (
       <div className="pb-12">
@@ -120,7 +146,11 @@ export default async function StorePage({ params }: StorePageProps) {
         </section>
 
         <section className="wrapper pt-8">
-          <StoreTabs branches={store.branches ?? []} workingHours={store.workingHours} />
+          <StoreTabs
+            branches={store.branches ?? []}
+            menuImages={menuImages}
+            workingHours={store.workingHours}
+          />
         </section>
       </div>
     )
