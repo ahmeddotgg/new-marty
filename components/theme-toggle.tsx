@@ -8,8 +8,13 @@ import { cn } from "@/lib/utils"
 type ThemeToggleProps = {
   className?: string
   variant?: "outline" | "ghost"
+  size?: "icon-sm" | "icon-lg"
 }
-export function ThemeToggle({ className, variant = "ghost" }: ThemeToggleProps) {
+export function ThemeToggle({
+  className,
+  variant = "ghost",
+  size = "icon-lg"
+}: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme()
 
   return (
@@ -17,7 +22,7 @@ export function ThemeToggle({ className, variant = "ghost" }: ThemeToggleProps) 
       aria-label="Toggle theme"
       className={cn(className)}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      size="icon-lg"
+      size={size}
       variant={variant}
     >
       <HugeiconsIcon

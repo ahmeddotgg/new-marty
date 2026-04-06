@@ -88,8 +88,8 @@ export default function Navbar() {
             حمل التطبيق
             <span className="hidden sm:block">الأن</span>
           </Button>
-          <div className="ms-2 hidden sm:block">
-            <ThemeToggle />
+          <div className="ms-1 hidden md:block">
+            <ThemeToggle size="icon-sm" />
           </div>
         </div>
       </div>

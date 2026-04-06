@@ -123,10 +123,8 @@ export default async function StorePage({ params }: StorePageProps) {
               </div>
 
               <div className="space-y-3 pb-2 text-center md:text-start">
-                <h1 className="block text-3xl font-black text-primary-foreground md:text-4xl">
-                  {store.name}
-                </h1>
-                <div className="flex flex-wrap justify-center gap-2 text-sm text-primary-foreground/70 md:justify-start">
+                <h1 className="block text-3xl font-black md:text-4xl">{store.name}</h1>
+                <div className="flex flex-wrap justify-center gap-2 text-sm md:justify-start">
                   {typeof store.category === "object" && store.category ? (
                     <span className="rounded-full bg-secondary px-3 py-1">
                       {store.category.name}
@@ -135,7 +133,7 @@ export default async function StorePage({ params }: StorePageProps) {
                   {(store.sub_categories ?? []).map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-primary px-3 py-1 font-medium"
+                      className="rounded-full bg-primary px-3 font-medium text-foreground ring-2 ring-foreground dark:text-background dark:ring-background"
                     >
                       {item}
                     </span>
