@@ -41,7 +41,6 @@ function CategoryButton({
           height={48}
           loading={eager ? "eager" : "lazy"}
           sizes="48px"
-          unoptimized
           className="h-12 w-12 rounded-full object-cover"
         />
       ) : null}
@@ -103,7 +102,6 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                 height={56}
                 loading="eager"
                 sizes="56px"
-                unoptimized
                 className="h-14 w-14 rounded-full object-cover"
               />
             ) : null}

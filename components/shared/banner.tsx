@@ -28,10 +28,10 @@ export default function Banner() {
               draggable="false"
               src="/nazl_elapp.png"
               alt="downlaod the app"
-              width={256}
-              height={459}
+              width={1272}
+              height={572}
               priority
-              className="h-auto w-auto"
+              className="h-auto w-auto max-w-72"
             />
           </motion.div>
           <motion.div
@@ -67,8 +67,8 @@ export default function Banner() {
               draggable="false"
               src="/marty_hero.png"
               alt="marty logo"
-              width={250}
-              height={108}
+              width={1536}
+              height={2752}
               priority
               className="h-auto w-auto"
             />
@@ -83,8 +83,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/fried-chicken.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>
@@ -98,8 +98,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/pizza-slice-1.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>
@@ -113,8 +113,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/shopping-cart-1.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>
@@ -128,8 +128,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/medicine.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>
@@ -143,8 +143,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/burger-1.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>
@@ -158,8 +158,8 @@ export default function Banner() {
               draggable="false"
               src="/icons/vegetables.png"
               alt=""
-              width={72}
-              height={72}
+              width={2048}
+              height={2048}
               className="h-auto w-auto"
             />
           </motion.div>

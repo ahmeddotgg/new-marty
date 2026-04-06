@@ -60,25 +60,28 @@ export default async function StorePage({ params }: StorePageProps) {
       typeof store.logo === "object" && store.logo
         ? ((store.logo as Media).url ?? null)
         : null
-    const menuImages = (store.menu_imgs ?? []).reduce<StoreMenuImage[]>((images, image, index) => {
-      if (typeof image !== "object" || !image) {
+    const menuImages = (store.menu_imgs ?? []).reduce<StoreMenuImage[]>(
+      (images, image, index) => {
+        if (typeof image !== "object" || !image) {
+          return images
+        }
+
+        const media = image as Media
+
+        if (!media.url) {
+          return images
+        }
+
+        images.push({
+          id: media.id ?? `menu-image-${index}`,
+          url: media.url,
+          alt: media.alt || `${store.name} menu ${index + 1}`
+        })
+
         return images
-      }
-
-      const media = image as Media
-
-      if (!media.url) {
-        return images
-      }
-
-      images.push({
-        id: media.id ?? `menu-image-${index}`,
-        url: media.url,
-        alt: media.alt || `${store.name} menu ${index + 1}`
-      })
-
-      return images
-    }, [])
+      },
+      []
+    )
 
     return (
       <div className="pb-12">
@@ -92,7 +95,6 @@ export default async function StorePage({ params }: StorePageProps) {
                 height={420}
                 priority
                 sizes="100vw"
-                unoptimized
                 className="h-56 w-full object-cover md:h-72"
               />
             ) : (
@@ -111,7 +113,6 @@ export default async function StorePage({ params }: StorePageProps) {
                     height={144}
                     priority
                     sizes="144px"
-                    unoptimized
                     className="h-28 w-28 object-cover md:h-36 md:w-36"
                   />
                 ) : (

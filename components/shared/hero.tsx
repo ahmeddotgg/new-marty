@@ -1,6 +1,7 @@
 "use client"
 
 import { useInView, motion } from "motion/react"
+import Image from "next/image"
 import { useRef } from "react"
 import Stores from "./stores"
 
@@ -19,7 +20,7 @@ export default function Hero() {
             show: { opacity: 1, y: 0, transition: { type: "spring" } },
             hidden: { opacity: 0, y: -18 }
           }}
-          className="text-center text-2xl leading-11 font-bold text-balance text-primary-foreground md:text-start md:text-4xl md:leading-16"
+          className="text-center text-2xl leading-11 font-bold text-balance text-foreground md:text-start md:text-4xl md:leading-16"
         >
           رفيقك اليومي لتوصيل الطلبات{" "}
           <span className="rounded-xl bg-accent px-2 whitespace-nowrap text-white">
@@ -41,10 +42,7 @@ export default function Hero() {
           <Stores />
         </motion.div>
       </div>
-      <motion.img
-        src="/showcase.png"
-        alt="app showcase"
-        className="inline-block w-full max-w-lg"
+      <motion.div
         ref={ref}
         initial="hidden"
         animate={isInView ? "show" : ""}
@@ -52,7 +50,16 @@ export default function Hero() {
           show: { opacity: 1, y: 0, transition: { type: "spring", delay: 0.1 } },
           hidden: { opacity: 0, y: -18 }
         }}
-      />
+      >
+        <Image
+          src="/showcase.png"
+          alt="app showcase"
+          loading="eager"
+          width={599}
+          height={560}
+          className="h-auto w-auto"
+        />
+      </motion.div>
     </div>
   )
 }

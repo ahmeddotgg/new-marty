@@ -64,7 +64,7 @@ function SheetContent({
             data-slot="sheet-close"
             render={<Button variant="outline" size="icon-lg" />}
           >
-            <HugeiconsIcon icon={Cancel01Icon} />
+            <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
             <span className="sr-only">Close</span>
           </SheetPrimitive.Close>
         )}
@@ -106,9 +106,9 @@ function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
       {props.children}
       <SheetPrimitive.Close
         data-slot="sheet-close"
-        render={<Button variant="outline" size="icon" />}
+        render={<Button variant="outline" size="icon-lg" />}
       >
-        <HugeiconsIcon icon={Cancel01Icon} />
+        <HugeiconsIcon icon={Cancel01Icon} className="size-5" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Title>

@@ -4,6 +4,7 @@ import localFont from "next/font/local"
 import { PropsWithChildren } from "react"
 import Banner from "@/components/shared/banner"
 import Navbar from "@/components/shared/navbar"
+import { ThemeProvider } from "@/components/theme-provider"
 import { DirectionProvider } from "@/components/ui/direction"
 import { cn } from "@/lib/utils"
 
@@ -11,7 +12,6 @@ export const metadata: Metadata = {
   title: "Marty - مارتي",
   description: `تطبيق مارتي هو رفيقك اليومي لتوصيل الطلبات في بنها بسرعة وسهولة. سواء كنت تريد وجبات من مطاعمك المفضلة، مشروبات من الكافيهات، أو مستلزمات من البقالة، نوفر لك تجربة طلب سهلة وآمنة مع تتبع مباشر للطلب حتى باب منزلك. استمتع بعروض حصرية، طرق دفع متعددة، ودعم دائم لخدمتك على مدار الساعة.`
 }
-
 const graphik = localFont({
   src: [
     {
@@ -38,7 +38,6 @@ const graphik = localFont({
   variable: "--graphik",
   preload: false
 })
-
 const nohemi = localFont({
   src: [
     {
@@ -53,7 +52,6 @@ const nohemi = localFont({
   variable: "--nohemi",
   preload: false
 })
-
 const inter = localFont({
   src: [
     {
@@ -79,9 +77,16 @@ export default function RootLayout({ children }: PropsWithChildren) {
     >
       <body>
         <DirectionProvider direction="rtl">
-          <Banner />
-          <Navbar />
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Banner />
+            <Navbar />
+            {children}
+          </ThemeProvider>
         </DirectionProvider>
       </body>
     </html>

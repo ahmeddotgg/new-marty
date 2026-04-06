@@ -2,8 +2,11 @@
 
 import { Menu01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { useTheme } from "next-themes"
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { ThemeToggle } from "../theme-toggle"
 import {
   Sheet,
   SheetClose,
@@ -21,6 +24,16 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export default function MobileSheet() {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
+  const { resolvedTheme } = useTheme()
+  const [logo, setLogo] = useState("/logo.svg")
+
+  useEffect(() => {
+    if (resolvedTheme === "dark") {
+      setLogo("/logo_dark.svg")
+    } else {
+      setLogo("/logo.svg")
+    }
+  }, [resolvedTheme])
 
   useEffect(() => {
     if (!isMobile) {
@@ -39,13 +52,17 @@ export default function MobileSheet() {
       />
       <SheetContent showCloseButton={false}>
         <SheetHeader>
-          <SheetTitle className="py-3">
-            <img
-              src="/logo.svg"
+          <SheetTitle className="gap-2 py-3">
+            <Image
+              src={logo}
               alt="Logo"
+              loading="eager"
+              width={249.74}
+              height={107.82}
               draggable="false"
               className="me-auto w-auto max-w-32 md:me-0"
             />
+            <ThemeToggle variant="outline" />
           </SheetTitle>
           <SheetDescription></SheetDescription>
           <SheetClose />

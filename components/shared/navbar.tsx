@@ -2,8 +2,12 @@
 
 import { PhoneArrowDownIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { useTheme } from "next-themes"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { ThemeToggle } from "../theme-toggle"
 import { Button } from "../ui/button"
 import MobileSheet from "./mobile-sheet"
 import { cn } from "@/lib/utils"
@@ -18,17 +22,31 @@ export const links = [
 export default function Navbar() {
   const pathname = usePathname()
   const setIsOpen = useBanner((state) => state.setIsOpen)
+  const { resolvedTheme } = useTheme()
+  const [logo, setLogo] = useState("/logo.svg")
 
+  useEffect(() => {
+    if (resolvedTheme === "dark") {
+      setLogo("/logo_dark.svg")
+    } else {
+      setLogo("/logo.svg")
+    }
+  }, [resolvedTheme])
   return (
     <div className="wrapper py-6">
-      <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 font-semibold shadow-2xl sm:gap-6">
+      <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 font-semibold shadow-2xl sm:gap-6 dark:bg-secondary/10">
         <MobileSheet />
-        <img
-          src="/logo.svg"
+
+        <Image
+          src={logo}
           alt="Logo"
+          loading="eager"
+          width={249.74}
+          height={107.82}
           draggable="false"
           className="me-auto w-auto max-w-26 md:me-0 md:max-w-32"
         />
+
         <div className="hidden flex-1 items-center justify-center gap-4 text-xl md:flex">
           {links.map((link) => {
             const active =
@@ -59,7 +77,7 @@ export default function Navbar() {
         <div className="flex items-center gap-1">
           <Button
             onClick={() => setIsOpen(true)}
-            className="cursor-pointer font-semibold"
+            className="cursor-pointer font-semibold dark:text-primary-foreground"
             size="lg"
           >
             <HugeiconsIcon
@@ -70,6 +88,9 @@ export default function Navbar() {
             حمل التطبيق
             <span className="hidden sm:block">الأن</span>
           </Button>
+          <div className="ms-2 hidden sm:block">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </div>

@@ -4,6 +4,8 @@ import Image from "next/image"
 import { getPayload } from "payload"
 import StoreCard from "@/components/shared/store-card"
 
+const STORE_TIMEZONE = "Africa/Cairo"
+
 const getRelationID = (value: unknown): number | null => {
   if (typeof value === "number") {
     return value
@@ -20,6 +22,46 @@ const getRelationID = (value: unknown): number | null => {
   return null
 }
 
+const getMinutesInTimezone = (value: Date | string, timeZone: string) => {
+  const date = typeof value === "string" ? new Date(value) : value
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  })
+  const parts = formatter.formatToParts(date)
+  const hour = Number(parts.find((part) => part.type === "hour")?.value ?? "0")
+  const minute = Number(parts.find((part) => part.type === "minute")?.value ?? "0")
+
+  return hour * 60 + minute
+}
+
+const isStoreOpenNow = (
+  workingHours?: {
+    opensAt?: string | null
+    closesAt?: string | null
+  } | null
+) => {
+  if (!workingHours?.opensAt || !workingHours?.closesAt) {
+    return false
+  }
+
+  const openMinutes = getMinutesInTimezone(workingHours.opensAt, STORE_TIMEZONE)
+  const closeMinutes = getMinutesInTimezone(workingHours.closesAt, STORE_TIMEZONE)
+  const nowMinutes = getMinutesInTimezone(new Date(), STORE_TIMEZONE)
+
+  if (openMinutes === closeMinutes) {
+    return true
+  }
+
+  if (closeMinutes > openMinutes) {
+    return nowMinutes >= openMinutes && nowMinutes < closeMinutes
+  }
+
+  return nowMinutes >= openMinutes || nowMinutes < closeMinutes
+}
+
 type GroupedStores = {
   categoryID: number
   categoryName: string
@@ -29,10 +71,13 @@ type GroupedStores = {
     slug: string
     name: string
     isFutured?: boolean | null
-    isAvaliable?: boolean | null
     imageUrl: string | null
     subCategories: string[]
     location: string
+    workingHours?: {
+      opensAt?: string | null
+      closesAt?: string | null
+    } | null
   }[]
 }
 
@@ -84,13 +129,13 @@ export default async function Page() {
       slug: store.slug,
       name: store.name,
       isFutured: store.isFutured,
-      isAvaliable: store.isAvaliable,
       imageUrl:
         typeof store.logo === "object" && store.logo
           ? ((store.logo as Media).url ?? null)
           : null,
       subCategories: store.sub_categories ?? [],
-      location: store.branches?.[0]?.address ?? "يحتاج تحديث العنوان"
+      location: store.branches?.[0]?.address ?? "يحتاج تحديث العنوان",
+      workingHours: store.workingHours
     }
 
     if (currentGroup) {
@@ -120,7 +165,7 @@ export default async function Page() {
   return (
     <div className="wrapper space-y-10 py-10">
       <header className="space-y-2">
-        <h1 className="text-4xl font-black text-primary-foreground">المتاجر</h1>
+        <h1 className="text-4xl font-black">المتاجر</h1>
         <p className="text-foreground/70">تصفح جميع المتاجر المتاحة حسب التصنيف.</p>
       </header>
 
@@ -139,24 +184,22 @@ export default async function Page() {
                   className="h-11 w-11 rounded-full object-cover"
                 />
               ) : null}
-              <h2 className="text-2xl font-bold text-primary-foreground">
-                {group.categoryName}
-              </h2>
+              <h2 className="text-2xl font-bold">{group.categoryName}</h2>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 lg:grid-cols-2">
               {group.stores.map((store) => (
                 <StoreCard
                   key={store.id}
                   categories={store.subCategories.join(" - ") || group.categoryName}
-                  deliveryTime="45 - 60 min"
                   href={`/stores/${store.slug}`}
                   imageAlt={store.name}
                   imageUrl={store.imageUrl}
                   location={store.location}
                   name={store.name}
-                  rating="4.9"
-                  statusLabel={store.isAvaliable ? "مفتوح الآن" : "غير متاح حالياً"}
+                  statusLabel={
+                    isStoreOpenNow(store.workingHours) ? "مفتوح الآن" : "مغلق الأن"
+                  }
                   variant={store.isFutured ? "featured" : "default"}
                 />
               ))}

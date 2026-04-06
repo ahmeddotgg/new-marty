@@ -61,7 +61,7 @@ export default function FuturedStores({ stores }: FuturedStoresProps) {
                       height={180}
                       priority={index < 6}
                       sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
-                      unoptimized
+                      loading="eager"
                       className="h-28 w-28 rounded-full border-3 border-secondary object-cover"
                     />
                   ) : (
