@@ -164,9 +164,11 @@ export default async function Page() {
 
   return (
     <div className="wrapper space-y-10 py-10">
-      <header className="space-y-2">
+      <header className="space-y-3">
         <h1 className="text-4xl font-black">المتاجر</h1>
-        <p className="text-foreground/70">تصفح جميع المتاجر المتاحة حسب التصنيف.</p>
+        <p className="text-sm font-medium text-muted-foreground">
+          تصفح جميع المتاجر المتاحة حسب التصنيف.
+        </p>
       </header>
 
       <div className="space-y-12">

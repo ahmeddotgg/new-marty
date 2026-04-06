@@ -105,9 +105,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                 className="h-14 w-14 rounded-full object-cover"
               />
             ) : null}
-            <h2 className="text-2xl font-bold text-primary-foreground">
-              {category.name}
-            </h2>
+            <h2 className="text-2xl font-bold">{category.name}</h2>
           </div>
           <SubCategoriesRow items={category.subCategories} />
         </div>
