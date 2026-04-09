@@ -40,7 +40,7 @@ export default function StoreCard({
     <Item
       render={<Link href={href} />}
       className={cn(
-        "rounded-4xl bg-background shadow-sm ring-3 ring-secondary transition-transform duration-300 hover:-translate-y-1 dark:bg-foreground",
+        "min-w-0 overflow-hidden rounded-4xl bg-background shadow-sm ring-3 ring-secondary transition-transform duration-300 hover:-translate-y-1 dark:bg-foreground",
         variant === "featured" &&
           "bg-secondary ring-foreground dark:bg-secondary dark:ring-foreground"
       )}
@@ -63,7 +63,7 @@ export default function StoreCard({
       <ItemContent className="p-4">
         <ItemTitle
           className={cn(
-            "line-clamp-2 text-xl font-black text-secondary",
+            "text-lg font-black text-secondary",
             variant === "featured" && "text-background dark:text-foreground"
           )}
         >
@@ -71,12 +71,12 @@ export default function StoreCard({
         </ItemTitle>
         <ItemDescription
           className={cn(
-            "space-y-1 text-xs font-medium text-foreground dark:text-background",
+            "text-xs font-medium text-foreground dark:text-background",
             variant === "featured" && "text-background dark:text-foreground"
           )}
         >
-          <span className="block truncate">{categories}</span>
-          <span className="flex items-center gap-1 truncate">
+          <span className="inline-block">{categories}</span>
+          <span className="flex items-center gap-1">
             <HugeiconsIcon
               icon={Location01Icon}
               className="inline size-3.5"

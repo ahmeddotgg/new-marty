@@ -1,7 +1,8 @@
 import type { Media } from "@/payload-types"
 import config from "@payload-config"
+import Image from "next/image"
 import { getPayload } from "payload"
-import CategoriesSection from "@/components/shared/categories-section"
+import CategorieFilter from "@/components/shared/categorie-filter"
 import FuturedStores from "@/components/shared/futured-stores"
 import Hero from "@/components/shared/hero"
 
@@ -29,6 +30,7 @@ export default async function Home() {
       depth: 1,
       limit: 100,
       pagination: false,
+      sort: "createdAt",
       select: {
         name: true,
         icon: true,
@@ -54,24 +56,18 @@ export default async function Home() {
               : null
         }))}
       />
-      <CategoriesSection
-        categories={categories.docs.map((category) => ({
-          id: category.id,
-          name: category.name,
-          iconUrl:
-            typeof category.icon === "object" && category.icon
-              ? ((category.icon as Media).url ?? null)
-              : null,
-          subCategories: (category.sub_categories ?? []).map((subCategory) => ({
-            id: subCategory.id ?? subCategory.name,
-            name: subCategory.name,
-            iconUrl:
-              typeof subCategory.icon === "object" && subCategory.icon
-                ? ((subCategory.icon as Media).url ?? null)
-                : null
-          }))
-        }))}
-      />
+      <div className="wrapper py-32">
+        <Image
+          src="/stores.png"
+          alt="stores heading icon"
+          width={1554}
+          height={1342}
+          loading="eager"
+          className="mx-auto max-w-50"
+        />
+        <h2 className="py-12 text-2xl font-bold">الاقسام</h2>
+        <CategorieFilter categories={categories.docs} />
+      </div>
     </div>
   )
 }

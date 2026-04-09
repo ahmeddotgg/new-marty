@@ -75,8 +75,8 @@ export default function FuturedStores({ stores }: FuturedStoresProps) {
           </CarouselContent>
         </div>
 
-        <CarouselPrevious className="hidden rotate-180 sm:inline-flex" />
-        <CarouselNext className="hidden rotate-180 sm:inline-flex" />
+        <CarouselPrevious className="hidden sm:inline-flex" />
+        <CarouselNext className="hidden sm:inline-flex" />
       </Carousel>
     </section>
   )
