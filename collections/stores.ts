@@ -1,9 +1,14 @@
 import type { CollectionConfig, FieldHook, PayloadRequest } from "payload"
+import { Media } from "@/payload-types"
 
-type CategoryDocument = {
+export type CategoryDocument = {
   id: number | string
+  name: string
+  icon: number | Media
   sub_categories?:
     | {
+        id: number | string
+        icon: string
         name?: string | null
       }[]
     | null
@@ -178,7 +183,7 @@ const Stores: CollectionConfig = {
     {
       name: "menu_imgs",
       type: "upload",
-      required: true,
+      required: false,
       hasMany: true,
       relationTo: "media"
     },

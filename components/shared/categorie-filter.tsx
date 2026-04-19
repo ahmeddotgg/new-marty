@@ -4,25 +4,13 @@ import type { Media } from "@/payload-types"
 import Image from "next/image"
 import { useState } from "react"
 import { Button } from "../ui/button"
+import { CategoryDocument } from "@/collections/stores"
 import { cn } from "@/lib/utils"
-
-type FilterCategory = {
-  id: number
-  name: string
-  icon: number | Media
-  sub_categories?:
-    | {
-        name: string
-        icon: number | Media
-        id?: string | null
-      }[]
-    | null
-}
 
 export default function CategorieFilter({
   categories
 }: {
-  categories: FilterCategory[]
+  categories: CategoryDocument[]
 }) {
   const [activeCategory, setActiveCategory] = useState(5)
   const activeCategoryId = categories.filter((category) => category.id === activeCategory)
@@ -47,7 +35,7 @@ export default function CategorieFilter({
               )}
               size="lg"
               onClick={() => {
-                setActiveCategory(category.id)
+                setActiveCategory(Number(category.id))
                 setActiveSubCategory("")
               }}
             >
@@ -88,7 +76,7 @@ export default function CategorieFilter({
               >
                 <Image
                   src={iconUrl as string}
-                  alt={sub_category.name}
+                  alt={sub_category.name as string}
                   width={56}
                   height={56}
                   loading="eager"
