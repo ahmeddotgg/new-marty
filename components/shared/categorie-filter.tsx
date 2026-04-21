@@ -4,13 +4,25 @@ import type { Media } from "@/payload-types"
 import Image from "next/image"
 import { useState } from "react"
 import { Button } from "../ui/button"
-import { CategoryDocument } from "@/collections/stores"
 import { cn } from "@/lib/utils"
+
+type FilterCategory = {
+  id: number
+  name: string
+  icon: number | Media
+  sub_categories?:
+    | {
+        name: string
+        icon: number | Media
+        id?: string | null
+      }[]
+    | null
+}
 
 export default function CategorieFilter({
   categories
 }: {
-  categories: CategoryDocument[]
+  categories: FilterCategory[]
 }) {
   const [activeCategory, setActiveCategory] = useState(5)
   const activeCategoryId = categories.filter((category) => category.id === activeCategory)
