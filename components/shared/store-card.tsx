@@ -1,6 +1,6 @@
 "use client"
 
-import { Location01Icon } from "@hugeicons/core-free-icons"
+import { DashboardSquare03Icon, Location01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -60,29 +60,36 @@ export default function StoreCard({
           className="h-auto w-auto object-cover"
         />
       </ItemMedia>
-      <ItemContent className="p-4">
+      <ItemContent className="px-2 py-4 sm:p-4">
         <ItemTitle
           className={cn(
-            "text-lg font-black text-secondary",
+            "mb-2 text-[15px] font-black text-secondary sm:text-lg",
             variant === "featured" && "text-background dark:text-foreground"
           )}
         >
-          {name}
+          <span className="truncate">{name}</span>
         </ItemTitle>
         <ItemDescription
           className={cn(
-            "text-xs font-medium text-foreground dark:text-background",
+            "space-y-1 text-[10px] font-medium text-foreground dark:text-background",
             variant === "featured" && "text-background dark:text-foreground"
           )}
         >
-          <span className="inline-block">{categories}</span>
+          <span className="flex items-center gap-1">
+            <HugeiconsIcon
+              icon={DashboardSquare03Icon}
+              className="size-3 shrink-0"
+              strokeWidth={2.4}
+            />
+            <span className="line-clamp-1">{categories}</span>
+          </span>
           <span className="flex items-center gap-1">
             <HugeiconsIcon
               icon={Location01Icon}
-              className="inline size-3.5"
+              className="size-3 shrink-0"
               strokeWidth={2.4}
-            />{" "}
-            {location}
+            />
+            <span className="line-clamp-1">{location}</span>
           </span>
         </ItemDescription>
         <ItemSeparator className="h-0.5! rounded-lg bg-foreground dark:bg-background" />
