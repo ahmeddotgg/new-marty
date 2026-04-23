@@ -3,7 +3,10 @@ import config from "@payload-config"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { getPayload } from "payload"
+import BackButton from "@/components/shared/back-button"
+import StoreCard from "@/components/shared/store-card"
 import StoreTabs from "@/components/shared/store-tabs"
+import { isStoreOpenNow } from "@/lib/store-utils"
 
 type StorePageProps = {
   params: Promise<{
@@ -41,16 +44,12 @@ export default async function StorePage({ params }: StorePageProps) {
         }
       },
       where: {
-        slug: {
-          equals: slug
-        }
+        slug: { equals: slug }
       }
     })
-    const [store] = stores.docs
 
-    if (!store) {
-      notFound()
-    }
+    const [store] = stores.docs
+    if (!store) notFound()
 
     const coverUrl =
       typeof store.cover === "object" && store.cover
@@ -60,32 +59,74 @@ export default async function StorePage({ params }: StorePageProps) {
       typeof store.logo === "object" && store.logo
         ? ((store.logo as Media).url ?? null)
         : null
+
     const menuImages = (store.menu_imgs ?? []).reduce<StoreMenuImage[]>(
-      (images, image, index) => {
-        if (typeof image !== "object" || !image) {
-          return images
-        }
-
+      (imgs, image, index) => {
+        if (typeof image !== "object" || !image) return imgs
         const media = image as Media
-
-        if (!media.url) {
-          return images
-        }
-
-        images.push({
+        if (!media.url) return imgs
+        imgs.push({
           id: media.id ?? `menu-image-${index}`,
           url: media.url,
           alt: media.alt || `${store.name} menu ${index + 1}`
         })
-
-        return images
+        return imgs
       },
       []
     )
 
+    // Fetch up to 3 similar stores in the same category
+    const categoryId =
+      typeof store.category === "object" && store.category
+        ? store.category.id
+        : typeof store.category === "number"
+          ? store.category
+          : null
+
+    const similarStoresResult = categoryId
+      ? await payload.find({
+          collection: "stores",
+          depth: 1,
+          limit: 3,
+          select: {
+            name: true,
+            slug: true,
+            logo: true,
+            sub_categories: true,
+            branches: true,
+            workingHours: true,
+            isFutured: true,
+            category: true
+          },
+          where: {
+            and: [{ category: { equals: categoryId } }, { slug: { not_equals: slug } }]
+          }
+        })
+      : null
+
+    const similarStores = (similarStoresResult?.docs ?? []).map((s) => ({
+      id: s.id,
+      name: s.name,
+      slug: s.slug,
+      imageUrl:
+        typeof s.logo === "object" && s.logo ? ((s.logo as Media).url ?? null) : null,
+      subCategories: s.sub_categories ?? [],
+      categoryName:
+        typeof s.category === "object" && s.category ? s.category.name : "غير مصنف",
+      location: s.branches?.[0]?.address ?? "يحتاج تحديث العنوان",
+      isFutured: s.isFutured,
+      isOpen: isStoreOpenNow(s.workingHours)
+    }))
+
     return (
-      <div className="pb-12">
-        <section className="wrapper pt-8">
+      <div className="pb-16">
+        {/* Back button */}
+        <div className="wrapper pt-6">
+          <BackButton />
+        </div>
+
+        {/* Cover + logo hero */}
+        <section className="wrapper pt-5">
           <div className="overflow-hidden rounded-[2rem] bg-secondary/60">
             {coverUrl ? (
               <Image
@@ -144,6 +185,7 @@ export default async function StorePage({ params }: StorePageProps) {
           </div>
         </section>
 
+        {/* Tabs */}
         <section className="wrapper pt-8">
           <StoreTabs
             branches={store.branches ?? []}
@@ -151,6 +193,28 @@ export default async function StorePage({ params }: StorePageProps) {
             workingHours={store.workingHours}
           />
         </section>
+
+        {/* Similar stores */}
+        {similarStores.length > 0 ? (
+          <section className="wrapper pt-14">
+            <h2 className="mb-6 text-2xl font-black">متاجر مشابهة</h2>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {similarStores.map((s) => (
+                <StoreCard
+                  key={s.id}
+                  href={`/stores/${s.slug}`}
+                  name={s.name}
+                  imageUrl={s.imageUrl}
+                  imageAlt={s.name}
+                  categories={s.subCategories.join(" · ") || s.categoryName}
+                  location={s.location}
+                  statusLabel={s.isOpen ? "مفتوح الآن" : "مغلق الأن"}
+                  variant={s.isFutured ? "featured" : "default"}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     )
   } catch {

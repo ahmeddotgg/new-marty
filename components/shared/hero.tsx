@@ -23,7 +23,7 @@ export default function Hero() {
           className="text-center text-2xl leading-11 font-bold text-balance text-foreground md:text-start md:text-4xl md:leading-16"
         >
           رفيقك اليومي لتوصيل الطلبات{" "}
-          <span className="rounded-xl bg-accent px-2 whitespace-nowrap text-white">
+          <span className="rounded-xl bg-accent px-2 whitespace-nowrap text-accent-foreground">
             بسرعة وسهولة.
           </span>
           <br />

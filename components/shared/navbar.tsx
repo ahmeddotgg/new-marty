@@ -34,7 +34,7 @@ export default function Navbar() {
   }, [resolvedTheme])
   return (
     <div className="wrapper py-6">
-      <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-2 font-semibold shadow-2xl sm:gap-6 dark:bg-secondary/10">
+      <div className="flex items-center gap-3 rounded-xl bg-background px-4 py-2 font-semibold shadow-2xl ring-1 ring-border sm:gap-6">
         <MobileSheet />
 
         <Image
@@ -77,7 +77,7 @@ export default function Navbar() {
         <div className="flex items-center gap-1">
           <Button
             onClick={() => setIsOpen(true)}
-            className="cursor-pointer font-semibold dark:text-primary-foreground"
+            className="cursor-pointer font-semibold"
             size="lg"
           >
             <HugeiconsIcon

@@ -1,8 +1,11 @@
 "use client"
 
+import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import * as motion from "motion/react-client"
 import Image from "next/image"
 import { useEffect, useState } from "react"
+import { Button } from "../ui/button"
 import {
   Carousel,
   CarouselApi,
@@ -11,7 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious
 } from "@/components/ui/carousel"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type MenuImage = {
@@ -56,7 +59,9 @@ function PanelCard({
   children: React.ReactNode
 }) {
   return (
-    <div className={`rounded-4xl bg-accent p-6 text-white ${className ?? ""}`}>
+    <div
+      className={`rounded-4xl bg-accent p-6 text-accent-foreground ${className ?? ""}`}
+    >
       {children}
     </div>
   )
@@ -87,35 +92,48 @@ function MenuImageDialog({
     api.scrollTo(activeIndex, true)
   }, [activeIndex, api, open])
 
+  const hasMany = images.length > 1
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl bg-background p-3 sm:max-w-5xl">
-        <Carousel
-          className="w-full"
-          dir="rtl"
-          opts={{ direction: "rtl", loop: images.length > 1 }}
-          setApi={setApi}
-        >
+      <DialogContent
+        showCloseButton={false}
+        className="max-w-3xl bg-transparent p-0 ring-0 sm:max-w-3xl"
+      >
+        <Carousel dir="rtl" opts={{ direction: "rtl", loop: hasMany }} setApi={setApi}>
           <CarouselContent>
             {images.map((image) => (
-              <CarouselItem key={image.id}>
-                <div className="overflow-hidden rounded-3xl">
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    width={1600}
-                    height={1600}
-                    sizes="(max-width: 768px) 100vw, 80vw"
-                    className="h-auto max-h-[75vh] w-full object-contain"
-                  />
-                </div>
+              <CarouselItem key={image.id} className="h-[40vh] sm:h-[65vh]">
+                <Image
+                  src={image.url}
+                  alt={image.alt}
+                  width={1600}
+                  height={1600}
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  className="h-full w-full rounded-2xl object-contain"
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
-          {images.length > 1 ? (
+
+          <DialogClose
+            tabIndex={-1}
+            render={
+              <Button
+                variant="secondary"
+                className="absolute inset-0 -top-5 rounded-full"
+                size="icon-lg"
+              />
+            }
+          >
+            <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2.5} className="size-5" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+
+          {hasMany ? (
             <>
-              <CarouselPrevious className="inset-s-3 top-1/2 border-0 bg-background/90 text-foreground hover:bg-background md:inset-s-4" />
-              <CarouselNext className="inset-e-3 top-1/2 border-0 bg-background/90 text-foreground hover:bg-background md:inset-e-4" />
+              <CarouselPrevious className="-inset-s-14 top-1/2 hidden size-11 hover:bg-background sm:flex xl:-inset-s-14" />
+              <CarouselNext className="-inset-e-14 top-1/2 hidden size-11 hover:bg-background sm:flex xl:-inset-e-14" />
             </>
           ) : null}
         </Carousel>

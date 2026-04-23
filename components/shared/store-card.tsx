@@ -36,19 +36,20 @@ export default function StoreCard({
   statusLabel = "مفتوح الآن",
   variant = "default"
 }: StoreCardProps) {
+  const isFeatured = variant === "featured"
+
   return (
     <Item
       render={<Link href={href} />}
       className={cn(
-        "min-w-0 overflow-hidden rounded-4xl bg-background shadow-sm ring-3 ring-secondary transition-transform duration-300 hover:-translate-y-1 dark:bg-foreground",
-        variant === "featured" &&
-          "bg-secondary ring-foreground dark:bg-secondary dark:ring-foreground"
+        "min-w-0 overflow-hidden rounded-4xl shadow-sm ring-3 transition-transform duration-300 hover:-translate-y-1",
+        isFeatured ? "bg-secondary ring-border" : "bg-card ring-border"
       )}
     >
       <ItemMedia
         className={cn(
-          "overflow-hidden rounded-4xl bg-foreground ring-3 ring-secondary in-focus-visible:ring-accent",
-          variant === "featured" && "ring-foreground"
+          "overflow-hidden rounded-4xl ring-3",
+          isFeatured ? "ring-border" : "ring-border in-focus-visible:ring-accent"
         )}
       >
         <Image
@@ -60,19 +61,21 @@ export default function StoreCard({
           className="h-auto w-auto object-cover"
         />
       </ItemMedia>
+
       <ItemContent className="px-2 py-4 sm:p-4">
         <ItemTitle
           className={cn(
-            "mb-2 text-[15px] font-black text-secondary sm:text-lg",
-            variant === "featured" && "text-background dark:text-foreground"
+            "mb-2 text-[15px] font-black sm:text-lg",
+            isFeatured ? "text-secondary-foreground" : "text-card-foreground"
           )}
         >
           <span className="truncate">{name}</span>
         </ItemTitle>
+
         <ItemDescription
           className={cn(
-            "space-y-1 text-[10px] font-medium text-foreground dark:text-background",
-            variant === "featured" && "text-background dark:text-foreground"
+            "space-y-1 text-[10px] font-medium",
+            isFeatured ? "text-secondary-foreground/80" : "text-muted-foreground"
           )}
         >
           <span className="flex items-center gap-1">
@@ -92,12 +95,14 @@ export default function StoreCard({
             <span className="line-clamp-1">{location}</span>
           </span>
         </ItemDescription>
-        <ItemSeparator className="h-0.5! rounded-lg bg-foreground dark:bg-background" />
+
+        <ItemSeparator className="h-0.5! rounded-lg bg-border" />
+
         <ItemFooter>
           <span
             className={cn(
-              "rounded-full border-2 border-foreground bg-primary px-2 text-xs font-bold text-primary-foreground shadow-sm dark:border-background",
-              statusLabel === "مغلق الأن" && "bg-gray-300"
+              "rounded-full border border-border bg-primary px-2 text-xs font-bold text-primary-foreground shadow-sm",
+              statusLabel === "مغلق الأن" && "bg-muted text-muted-foreground"
             )}
           >
             {statusLabel}

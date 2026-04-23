@@ -75,8 +75,8 @@ export default function FuturedStores({ stores }: FuturedStoresProps) {
           </CarouselContent>
         </div>
 
-        <CarouselPrevious className="ring-1 ring-foreground dark:bg-white dark:text-background dark:ring-0" />
-        <CarouselNext className="ring-1 ring-foreground dark:bg-white dark:text-background dark:ring-0" />
+        <CarouselPrevious className="bg-background text-foreground ring-1 ring-border" />
+        <CarouselNext className="bg-background text-foreground ring-1 ring-border" />
       </Carousel>
     </section>
   )
