@@ -60,7 +60,7 @@ function PanelCard({
 }) {
   return (
     <div
-      className={`rounded-4xl bg-accent p-6 text-accent-foreground ${className ?? ""}`}
+      className={`rounded-4xl bg-accent p-6 text-white ${className ?? ""}`}
     >
       {children}
     </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { DashboardSquare03Icon, Location01Icon } from "@hugeicons/core-free-icons"
+import { Location01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -36,20 +36,19 @@ export default function StoreCard({
   statusLabel = "مفتوح الآن",
   variant = "default"
 }: StoreCardProps) {
-  const isFeatured = variant === "featured"
-
   return (
     <Item
       render={<Link href={href} />}
       className={cn(
-        "min-w-0 overflow-hidden rounded-4xl shadow-sm ring-3 transition-transform duration-300 hover:-translate-y-1",
-        isFeatured ? "bg-secondary ring-border" : "bg-card ring-border"
+        "min-w-0 overflow-hidden rounded-4xl bg-background shadow-sm ring-3 ring-secondary transition-transform duration-300 hover:-translate-y-1 dark:bg-foreground",
+        variant === "featured" &&
+          "bg-secondary ring-foreground dark:bg-secondary dark:ring-foreground"
       )}
     >
       <ItemMedia
         className={cn(
-          "overflow-hidden rounded-4xl ring-3",
-          isFeatured ? "ring-border" : "ring-border in-focus-visible:ring-accent"
+          "overflow-hidden rounded-4xl bg-foreground ring-3 ring-secondary in-focus-visible:ring-accent",
+          variant === "featured" && "ring-foreground"
         )}
       >
         <Image
@@ -61,48 +60,37 @@ export default function StoreCard({
           className="h-auto w-auto object-cover"
         />
       </ItemMedia>
-
-      <ItemContent className="px-2 py-4 sm:p-4">
+      <ItemContent className="p-4">
         <ItemTitle
           className={cn(
-            "mb-2 text-[15px] font-black sm:text-lg",
-            isFeatured ? "text-secondary-foreground" : "text-card-foreground"
+            "text-lg font-black text-secondary",
+            variant === "featured" && "text-background dark:text-foreground"
           )}
         >
-          <span className="truncate">{name}</span>
+          {name}
         </ItemTitle>
-
         <ItemDescription
           className={cn(
-            "space-y-1 text-[10px] font-medium",
-            isFeatured ? "text-secondary-foreground/80" : "text-muted-foreground"
+            "text-xs font-medium text-foreground dark:text-background",
+            variant === "featured" && "text-background dark:text-foreground"
           )}
         >
-          <span className="flex items-center gap-1">
-            <HugeiconsIcon
-              icon={DashboardSquare03Icon}
-              className="size-3 shrink-0"
-              strokeWidth={2.4}
-            />
-            <span className="line-clamp-1">{categories}</span>
-          </span>
+          <span className="inline-block">{categories}</span>
           <span className="flex items-center gap-1">
             <HugeiconsIcon
               icon={Location01Icon}
-              className="size-3 shrink-0"
+              className="inline size-3.5"
               strokeWidth={2.4}
-            />
-            <span className="line-clamp-1">{location}</span>
+            />{" "}
+            {location}
           </span>
         </ItemDescription>
-
-        <ItemSeparator className="h-0.5! rounded-lg bg-border" />
-
+        <ItemSeparator className="h-0.5! rounded-lg bg-foreground dark:bg-background" />
         <ItemFooter>
           <span
             className={cn(
-              "rounded-full border border-border bg-primary px-2 text-xs font-bold text-primary-foreground shadow-sm",
-              statusLabel === "مغلق الأن" && "bg-muted text-muted-foreground"
+              "rounded-full border-2 border-foreground bg-primary px-2 text-xs font-bold text-primary-foreground shadow-sm dark:border-background",
+              statusLabel === "مغلق الأن" && "bg-gray-300"
             )}
           >
             {statusLabel}

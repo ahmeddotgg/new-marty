@@ -2,7 +2,7 @@
 
 import type { Media } from "@/payload-types"
 import config from "@payload-config"
-import { getPayload } from "payload"
+import { getPayload, type Where } from "payload"
 import { isStoreOpenNow } from "@/lib/store-utils"
 
 export type NormalizedStore = {
@@ -40,7 +40,7 @@ export async function fetchStores({
 }> {
   const payload = await getPayload({ config })
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (query?.trim()) {
     where.name = { like: query.trim() }
   }
