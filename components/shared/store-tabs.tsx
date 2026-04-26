@@ -59,9 +59,7 @@ function PanelCard({
   children: React.ReactNode
 }) {
   return (
-    <div
-      className={`rounded-4xl bg-accent p-6 text-white ${className ?? ""}`}
-    >
+    <div className={`rounded-4xl bg-accent p-6 text-white ${className ?? ""}`}>
       {children}
     </div>
   )
